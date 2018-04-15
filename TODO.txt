@@ -1,0 +1,10 @@
+#Bug Fixes
+
+#Enhancements
+- Allow summoning by replying to account
+- !help feature
+- Logging goes to file
+- Better configuration tool
+- Warning when configuration is incorrect
+- Counter shown for max time
+- System vars
