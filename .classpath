@@ -11,6 +11,6 @@
 	<classpathentry kind="lib" path="lib/commons-configuration2-2.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils-1.9.3.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/aelesia"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/commons"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

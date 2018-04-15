@@ -122,6 +122,8 @@ public class InterfaceConsole implements Runnable {
 					Logger.error("General error: " + input);
 					e.printStackTrace();
 				}
+			} else {
+				System.out.println("Invalid command");
 			}
 		}
 	}
