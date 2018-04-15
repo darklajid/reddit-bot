@@ -23,7 +23,7 @@ public class AmosBot extends RedditBot implements AmosBotAPI {
 
 	public static final AmosBotConfig config = new AmosBotConfig("config.properties");
 	List<RedditPost> history;
-	LocalDateTime bootTime = LocalDateTime.now().minusDays(1).minusHours(1).minusMinutes(59);
+	LocalDateTime bootTime = LocalDateTime.now();
 	
 	Storage jsonStorage =  new JsonTextStorage();
 	PostFilter filter = new PostFilter();
