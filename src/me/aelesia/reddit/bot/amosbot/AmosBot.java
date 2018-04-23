@@ -122,7 +122,7 @@ public class AmosBot extends RedditBot implements AmosBotAPI {
 				&& PostScanner.isNewAmosThread(post, history)
 				&& PostScanner.cooldown(post, lastPost())) {
 			Logger.info("Counter has been reset! Post #" + post.id() + " , user: " + post.author);
-			redditAPI.reply(post.id(), Response.resetCounter(post, history.get(history.size()-1)));
+			redditAPI.reply(post.id(), Response.resetCounter(post, history.get(history.size()-1)), AmosBotUtils.generateSignature());
 			history.add(post);
 			jsonStorage.save(history, AmosBot.config.FILE_HISTORY());
 		} 
@@ -144,10 +144,7 @@ public class AmosBot extends RedditBot implements AmosBotAPI {
 	@Override
 	public AmosBotAPI.obj time() {
 		AmosBotAPI.obj obj = new AmosBotAPI.obj();
-		obj.lastPostAuthor = lastPost().author;
-		obj.lastPostElapsed = lastPost().createdOn.until(LocalDateTime.now(), AmosBot.config.COOLDOWN_TYPE()) + " " + AmosBot.config.COOLDOWN_TYPE().name().toLowerCase();
-		obj.lastPostUrl = lastPost().url;
-		obj.lastPostCreOn = lastPost().createdOn;
+		obj.lastPost = lastPost();
 		return obj;
 	}
 

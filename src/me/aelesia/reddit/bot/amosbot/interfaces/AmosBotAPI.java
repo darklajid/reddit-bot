@@ -43,10 +43,7 @@ public interface AmosBotAPI {
     		public String uptime;
     		public List<RedditPost> history;
     		
-    		public String lastPostElapsed;
-    		public String lastPostAuthor;
-    		public LocalDateTime lastPostCreOn;
-    		public String lastPostUrl;
+    		public RedditPost lastPost;
     		
     		public static obj create() {
     			return new obj();

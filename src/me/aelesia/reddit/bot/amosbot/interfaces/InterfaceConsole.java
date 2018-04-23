@@ -1,5 +1,8 @@
 package me.aelesia.reddit.bot.amosbot.interfaces;
 
+import java.time.Clock;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
@@ -48,14 +51,17 @@ public class InterfaceConsole implements Runnable {
 		
 		case HISTORY:
 			obj = bot.history();
-			for (int i=obj.history.size()-1; i>=0; i--) {
-				RedditPost historicPost = obj.history.get(i);
+			for (int i=obj.history.size()-1; i>0; i--) {
+				RedditPost post = obj.history.get(i);
 				response+= "- ";
-				if (i!=0) {
-					response+= obj.history.get(i-1).createdOn.until(historicPost.createdOn, AmosBot.config.COOLDOWN_TYPE()) + " " + AmosBot.config.COOLDOWN_TYPE().name().toLowerCase() + " | "; }
-				response+= DateTimeFormatter.ofPattern("dd MMM yyyy").format(historicPost.createdOn) + " | ";
-				response+= historicPost.author + " | ";
-				response+= AmosBotUtils.toShortUrl(historicPost) + "\n";
+				if (i==obj.history.size()-1) {
+					response+= AmosBotUtils.formatTimeUnit(post.createdOn, LocalDateTime.now(ZoneId.of("+8"))) +  " | ";
+				} else {
+					response+= AmosBotUtils.formatTimeUnit(post.createdOn, obj.history.get(i+1).createdOn) +  " | ";
+				}
+				response+= DateTimeFormatter.ofPattern("dd MMM yyyy").format(post.createdOn) + " | ";
+				response+= post.author + " | ";
+				response+= AmosBotUtils.toShortUrl(post) + "\n";
 			}
 			break;
 			
@@ -69,10 +75,10 @@ public class InterfaceConsole implements Runnable {
 			
 		case TIME:
 			obj = bot.time();
-			response += "It has been " + obj.lastPostElapsed + " since Amos Yee was last brought up.\n\n";
-			response += "Last brought up by " + obj.lastPostAuthor;
-			response += " on " + DateTimeFormatter.ofPattern("dd MMM yyyy").format(obj.lastPostCreOn) ;
-			response += " - " + obj.lastPostUrl;
+			response += "It has been " + AmosBotUtils.generatePrefix() + " " + AmosBotUtils.formatTimeUnit(obj.lastPost.createdOn, LocalDateTime.now(ZoneId.of("+8")))  + " since we last talked about Amos Yee!\n";
+			response += "Last brought up by " +obj.lastPost.author;
+			response += " on " + DateTimeFormatter.ofPattern("dd MMM yyyy").format(obj.lastPost.createdOn) ;
+			response += ": " + AmosBotUtils.toShortUrl(obj.lastPost);
 			break;
 			
 		case PAUSE:
@@ -118,6 +124,7 @@ public class InterfaceConsole implements Runnable {
 					execute(input, command);
 				} catch (ArrayIndexOutOfBoundsException e) {
 					Logger.error("Invalid parameters: " + input);
+					e.printStackTrace();
 				} catch (Exception e) {
 					Logger.error("General error: " + input);
 					e.printStackTrace();

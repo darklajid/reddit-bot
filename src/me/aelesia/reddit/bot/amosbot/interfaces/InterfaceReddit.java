@@ -1,5 +1,7 @@
 package me.aelesia.reddit.bot.amosbot.interfaces;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
 import me.aelesia.commons.logger.Logger;
@@ -51,8 +53,11 @@ public class InterfaceReddit {
 				for (int i=obj.history.size()-1; i>=0; i--) {
 					RedditPost historicPost = obj.history.get(i);
 					response+= "- ";
-					if (i!=0) {
-						response+= obj.history.get(i-1).createdOn.until(historicPost.createdOn, AmosBot.config.COOLDOWN_TYPE()) + " " + AmosBot.config.COOLDOWN_TYPE().name().toLowerCase() + " | "; }
+					if (i==obj.history.size()-1) {
+						response+= AmosBotUtils.formatTimeUnit(historicPost.createdOn, LocalDateTime.now(ZoneId.of("+8"))) +  " | ";
+					} else {
+						response+= AmosBotUtils.formatTimeUnit(historicPost.createdOn, obj.history.get(i+1).createdOn) +  " | ";
+					}
 					response+= DateTimeFormatter.ofPattern("dd MMM yyyy").format(historicPost.createdOn) + " | ";
 					response+= historicPost.author + " | ";
 					response+= AmosBotUtils.toShortUrl(historicPost) + "\n";
@@ -69,10 +74,10 @@ public class InterfaceReddit {
 				
 			case TIME:
 				obj = bot.time();
-				response += "It has been " + obj.lastPostElapsed + " since Amos Yee was last brought up.\n\n";
-				response += "Last brought up by " + obj.lastPostAuthor;
-				response += " on " + DateTimeFormatter.ofPattern("dd MMM yyyy").format(obj.lastPostCreOn) ;
-				response += " - " + obj.lastPostUrl;
+				response += "It has been " + AmosBotUtils.generatePrefix() + " *" + AmosBotUtils.formatTimeUnit(obj.lastPost.createdOn, LocalDateTime.now(ZoneId.of("+8")))  + "* since we last talked about Amos Yee!\n\n";
+				response += "Last brought up by " +obj.lastPost.author;
+				response += " on " + DateTimeFormatter.ofPattern("dd MMM yyyy").format(obj.lastPost.createdOn) ;
+				response += ": " + AmosBotUtils.toShortUrl(obj.lastPost);
 				break;
 				
 			case PAUSE:
@@ -117,7 +122,7 @@ public class InterfaceReddit {
 	public void run(RedditPost post) {		
 		AmosBotAPI.e command = parseCommand(post);
 		if (command != null) {
-			redditAPI.reply(post.id(), generateResponse(post.text, command));
+			redditAPI.reply(post.id(), generateResponse(post.text, command), AmosBotUtils.generateSignature());
 		}
 	}
 
