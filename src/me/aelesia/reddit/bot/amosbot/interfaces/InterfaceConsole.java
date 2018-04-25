@@ -1,6 +1,5 @@
 package me.aelesia.reddit.bot.amosbot.interfaces;
 
-import java.time.Clock;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;

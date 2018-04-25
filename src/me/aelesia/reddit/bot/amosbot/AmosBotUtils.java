@@ -1,7 +1,6 @@
 package me.aelesia.reddit.bot.amosbot;
 
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Random;

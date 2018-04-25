@@ -1,6 +1,5 @@
 package me.aelesia.reddit.bot.amosbot.interfaces;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import me.aelesia.reddit.api.objects.RedditPost;
