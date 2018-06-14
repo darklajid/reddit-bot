@@ -4,11 +4,12 @@ import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.regex;
 import me.aelesia.commons.logger.Logger;
 import me.aelesia.reddit.api.objects.RedditPost;
 
 public class PostScanner {
-	
+	public static Pattern SearchPattern = Pattern.compile("\bamos\s+yee\b", Pattern.CASE_INSENSITIVE);
 	/**
 	 * Scans a post to see if the user was summoning the bot
 	 */
@@ -42,8 +43,8 @@ public class PostScanner {
 			Logger.info("Post #" + post.id() + " contains a username with 'amos' in it. Ignoring.");
 			return false;
 		}
-		else if (StringUtils.containsIgnoreCase(post.text, "amos") && StringUtils.containsIgnoreCase(post.text, "yee")) {
-			Logger.info("Post #" + post.id() + " contains keywords 'amos' & 'yee' in content");
+		else if (SearchPattern.matcher(post.text).matches()) {
+			Logger.info("Post #" + post.id() + " contains keywords 'amos yee' in content");
 			return true;
 		}
 		else if (post.isThread() && StringUtils.containsIgnoreCase(post.threadTitle, "amos")) {
